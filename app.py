@@ -147,7 +147,7 @@ all_tests = [
 ]
 
 path = "/tmp/spark-events"
-if not os.path.exits(path, 0755):
+if not os.path.exists(path, 0755):
    os.makedirs(path)
 
 if __name__ == "__main__":
