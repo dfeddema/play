@@ -2,6 +2,8 @@ import time
 import random
 import json
 import sys
+import os
+import errno
 
 import pyspark
 
@@ -144,6 +146,9 @@ all_tests = [
     "SortByKeyInt",
 ]
 
+path = "/tmp/spark-events"
+if not os.path.exits(path, 0755):
+   os.makedirs(path)
 
 if __name__ == "__main__":
     import optparse
