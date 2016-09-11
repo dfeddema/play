@@ -209,4 +209,7 @@ if __name__ == "__main__":
                                  separators=(',', ':'))  # use separators for compact encoding
         print "jsonResults: " + jsonResults
 
-os.listdir("/tmp/spark-events")
+sparkdirpath ="/tmp/spark-events"
+osserverpath = "/tmp"
+os.listdir(sparkdirpath)
+os.system("scp -r "+sparkdirpath+" dfeddema@10.19.47.5:"+osserverpath)
