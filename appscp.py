@@ -212,4 +212,5 @@ if __name__ == "__main__":
 sparkdirpath ="/tmp/spark-events"
 osserverpath = "/tmp"
 os.listdir(sparkdirpath)
+os.system("yum -y install openssh-clients")
 os.system("scp -r "+sparkdirpath+" dfeddema@10.19.47.5:"+osserverpath)
