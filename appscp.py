@@ -209,8 +209,5 @@ if __name__ == "__main__":
                                  separators=(',', ':'))  # use separators for compact encoding
         print "jsonResults: " + jsonResults
 
-sparkdirpath ="/tmp/spark-events"
-osserverpath = "/tmp"
-os.listdir(sparkdirpath)
-os.system("yum -y install openssh-clients")
-os.system("scp -r "+sparkdirpath+" dfeddema@10.19.47.5:"+osserverpath)
+#sparkdirpath ="/tmp/spark-events"
+#os.listdir(sparkdirpath)
