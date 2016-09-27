@@ -20,8 +20,8 @@ if __name__ == "__main__":
      for k, v in settings:
         sc._jsc.sc().hadoopConfiguration().set(k, v)
 
-     sc.parallelize(range(10000)).saveAsTextFile("s3a://dianes-new-bucket/digits")
+     sc.parallelize(range(10000)).saveAsTextFile("s3a://dianes-new-bucket/numerals")
 
-     sc.textFile("s3a://dianes-new-bucket/digits").take(5)
-     print(repr(sc.textFile("s3a://dianes-new-bucket/digits").take(5)))
+     sc.textFile("s3a://dianes-new-bucket/numerals").take(5)
+     print(repr(sc.textFile("s3a://dianes-new-bucket/numerals").take(5)))
 # => [u'0', u'1', u'2', u'3', u'4']
