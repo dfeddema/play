@@ -104,9 +104,7 @@ class SortByKeyInt(KVDataTestInt):
 
 class Count(KVDataTest):
     def runTest(self):
-        start = time.time()
         self.rdd.count()
-        print("completed in %s seconds", time.time() - start)
 
 class CountWithFilter(KVDataTest):
     def runTest(self):
