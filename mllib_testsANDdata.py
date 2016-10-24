@@ -11,6 +11,8 @@ from pyspark.mllib.clustering import *
 from pyspark.mllib.regression import *
 from pyspark.mllib.recommendation import *
 from pyspark.mllib.stat import *
+from pyspark.mllib.linalg import Vectors
+from pyspark.mllib.regression import LabeledPoint
 
 #from mllib_data import *
 
@@ -19,10 +21,10 @@ Data generation for MLlib spark-perf tests
 (+ data loading in the future)
 """
 
-import numpy
+#import numpy
 
-from pyspark.mllib.linalg import Vectors
-from pyspark.mllib.regression import LabeledPoint
+#from pyspark.mllib.linalg import Vectors
+#from pyspark.mllib.regression import LabeledPoint
 
 class FeaturesGenerator:
     """
