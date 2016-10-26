@@ -469,7 +469,7 @@ if __name__ == "__main__":
             systemProperties[k] = javaSystemProperties[k]
         ts = test.run()
         if len(ts) != test.options.num_trials:
-            raise Exception("mllib_tests.py FAILED (got %d results instead of %d)" %
+            raise Exception("mllib_testsANDdata.py FAILED (got %d results instead of %d)" %
                             (len(ts), test.options.num_trials))
         results = []
         if len(ts[0]) == 1:
