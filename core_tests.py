@@ -185,6 +185,13 @@ if __name__ == "__main__":
         test.createInputData()
         results = test.run()
         print "results:", ",".join("%.3f" % t for t in results)
+
+        # Pass S3 parameters to hadoop configuration 
+        sc._jsc.hadoopConfiguration().set("fs.s3a.endpoint","10.19.47.70")
+        sc._jsc.hadoopConfiguration().set("fs.s3a.access.key","0ZVTY7QAKJ8UBE3QFO4R")
+        sc._jsc.hadoopConfiguration().set("fs.s3a.secret.key","J3uyfdpH99i4UfzAhYC3sag5XT9M5JuYJKcDjDMr")
+        sc._jsc.hadoopConfiguration().set("fs.s3a.connection.ssl.enabled", "false") 
+        
         
         # JSON results
         javaSystemProperties = sc._jvm.System.getProperties()
