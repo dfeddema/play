@@ -77,6 +77,9 @@ class KVDataTest(PerfTest):
                 options.num_partitions, options.random_seed,
                 options.persistent_type)
 
+#       self.rdd.repartition(1).saveAsTextFile("s3a://dianes-new-bucket/KVDataSet")
+#       print "PerfTest =", PerfTest 
+        self.rdd.repartition(1).saveAsTextFile("/tmp/KVDataSet")
 
 class KVDataTestInt(KVDataTest):
     def __init__(self, sc):
