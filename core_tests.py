@@ -79,7 +79,7 @@ class KVDataTest(PerfTest):
 
 
         KVDataSetName = "/tmp/KVDataSet_%s" % (time.strftime("%Y-%m-%d_%H-%M-%S")) 
-        self.rdd.repartition(1).saveAsTextFile(KVDataSetName)
+#        self.rdd.repartition(1).saveAsTextFile(KVDataSetName)
 
 class KVDataTestInt(KVDataTest):
     def __init__(self, sc):
