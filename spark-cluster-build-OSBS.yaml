@@ -1,0 +1,442 @@
+kind: Template
+apiVersion: v1
+template: sparkosbs
+metadata:
+  name: sparkosbs
+labels:
+  app: sparkcluster
+objects:
+
+- kind: Service
+  apiVersion: v1
+  metadata:
+    name: ${MASTER_NAME}
+    labels:
+      name: ${MASTER_NAME}
+      oshinko-cluster: ${CLUSTER_NAME}
+      oshinko-type: master
+  spec:
+    ports:
+      - protocol: TCP
+        port: 7077
+        targetPort: 7077
+    selector:
+      name: ${MASTER_NAME}
+
+- kind: Service
+  apiVersion: v1
+  metadata:
+    name: ${MASTER_NAME}-webui
+    labels:
+      name: ${MASTER_NAME}
+      oshinko-cluster: ${CLUSTER_NAME}
+      oshinko-type: webui
+  spec:
+    ports:
+      - protocol: TCP
+        port: 8080
+        targetPort: 8080
+    selector:
+      name: ${MASTER_NAME}
+
+- kind: DeploymentConfig
+  apiVersion: v1
+  metadata:
+    name: ${MASTER_NAME}
+    labels:
+      oshinko-cluster: ${CLUSTER_NAME}
+      oshinko-type: master
+  spec:
+    strategy:
+      type: Rolling
+    triggers:
+      - type: ConfigChange
+    replicas: 1
+    selector:
+      name: ${MASTER_NAME}
+    template:
+      metadata:
+        labels:
+          name: ${MASTER_NAME}
+          oshinko-cluster: ${CLUSTER_NAME}
+          oshinko-type: master
+      spec:
+        containers:
+          - name: ${MASTER_NAME}
+            image: ${SPARK_IMAGE}
+            volumeMounts:
+            - name: config-volume
+              mountPath: /etc/config
+            env:
+              - name: SPARK_MASTER_PORT
+                value: "7077"
+              - name: SPARK_MASTER_WEBUI_PORT
+                value: "8080"
+              - name: UPDATE_SPARK_CONF_DIR 
+                value: /etc/config 
+            ports:
+              - containerPort: 7077
+                protocol: TCP
+              - containerPort: 8080
+                protocol: TCP
+        volumes:
+          - name: config-volume
+            configMap:
+              name: masterconfig 
+        nodeSelector:
+          perfnode: et10
+
+- kind: DeploymentConfig
+  apiVersion: v1
+  metadata:
+    name: ${WORKER_NAME}1 
+    labels:
+      oshinko-cluster: ${CLUSTER_NAME}
+      oshinko-type: worker
+  spec:
+    strategy:
+      type: Rolling
+    triggers:
+      - type: ConfigChange
+    replicas: 1
+    selector:
+      name: ${WORKER_NAME}1 
+    template:
+      metadata:
+        labels:
+          name: ${WORKER_NAME}1
+          oshinko-cluster: ${CLUSTER_NAME}
+          oshinko-type: worker
+      spec:
+        containers:
+          - name: ${WORKER_NAME}1
+            image: ${SPARK_IMAGE}
+            volumeMounts:
+            - name: config-volume
+              mountPath: /etc/config
+            env:
+              - name: SPARK_MASTER_ADDRESS
+                value: spark://${MASTER_NAME}:7077
+              - name: SPARK_MASTER_UI_ADDRESS
+                value: http://${MASTER_NAME}-webui:8080
+              - name: UPDATE_SPARK_CONF_DIR 
+                value: /etc/config 
+        volumes:
+          - name: config-volume
+            configMap:
+              name: workerconfig 
+        nodeSelector:
+          perfnode: et2
+
+- kind: DeploymentConfig
+  apiVersion: v1
+  metadata:
+    name: ${WORKER_NAME}2
+    labels:
+      oshinko-cluster: ${CLUSTER_NAME}
+      oshinko-type: worker
+  spec:
+    strategy:
+      type: Rolling
+    triggers:
+      - type: ConfigChange
+    replicas: 1
+    selector:
+      name: ${WORKER_NAME}2
+    template:
+      metadata:
+        labels:
+          name: ${WORKER_NAME}2
+          oshinko-cluster: ${CLUSTER_NAME}
+          oshinko-type: worker
+      spec:
+        containers:
+          - name: ${WORKER_NAME}2
+            image: ${SPARK_IMAGE}
+            volumeMounts:
+            - name: config-volume
+              mountPath: /etc/config
+            env:
+              - name: SPARK_MASTER_ADDRESS
+                value: spark://${MASTER_NAME}:7077
+              - name: SPARK_MASTER_UI_ADDRESS
+                value: http://${MASTER_NAME}-webui:8080
+              - name: UPDATE_SPARK_CONF_DIR 
+                value: /etc/config 
+        volumes:
+          - name: config-volume
+            configMap:
+              name: workerconfig 
+        nodeSelector:
+          perfnode: et3
+
+- kind: DeploymentConfig
+  apiVersion: v1
+  metadata:
+    name: ${WORKER_NAME}3
+    labels:
+      oshinko-cluster: ${CLUSTER_NAME}
+      oshinko-type: worker
+  spec:
+    strategy:
+      type: Rolling
+    triggers:
+      - type: ConfigChange
+    replicas: 1
+    selector:
+      name: ${WORKER_NAME}3
+    template:
+      metadata:
+        labels:
+          name: ${WORKER_NAME}3
+          oshinko-cluster: ${CLUSTER_NAME}
+          oshinko-type: worker
+      spec:
+        containers:
+          - name: ${WORKER_NAME}3
+            image: ${SPARK_IMAGE}
+            volumeMounts:
+            - name: config-volume
+              mountPath: /etc/config
+            env:
+              - name: SPARK_MASTER_ADDRESS
+                value: spark://${MASTER_NAME}:7077
+              - name: SPARK_MASTER_UI_ADDRESS
+                value: http://${MASTER_NAME}-webui:8080
+              - name: UPDATE_SPARK_CONF_DIR 
+                value: /etc/config 
+        volumes:
+          - name: config-volume
+            configMap:
+              name: workerconfig 
+        nodeSelector:
+          perfnode: et4
+
+- kind: DeploymentConfig
+  apiVersion: v1
+  metadata:
+    name: ${WORKER_NAME}4
+    labels:
+      oshinko-cluster: ${CLUSTER_NAME}
+      oshinko-type: worker
+  spec:
+    strategy:
+      type: Rolling
+    triggers:
+      - type: ConfigChange
+    replicas: 1
+    selector:
+      name: ${WORKER_NAME}4
+    template:
+      metadata:
+        labels:
+          name: ${WORKER_NAME}4
+          oshinko-cluster: ${CLUSTER_NAME}
+          oshinko-type: worker
+      spec:
+        containers:
+          - name: ${WORKER_NAME}4
+            image: ${SPARK_IMAGE}
+            volumeMounts:
+            - name: config-volume
+              mountPath: /etc/config
+            env:
+              - name: SPARK_MASTER_ADDRESS
+                value: spark://${MASTER_NAME}:7077
+              - name: SPARK_MASTER_UI_ADDRESS
+                value: http://${MASTER_NAME}-webui:8080
+              - name: UPDATE_SPARK_CONF_DIR 
+                value: /etc/config 
+        volumes:
+          - name: config-volume
+            configMap:
+              name: workerconfig 
+        nodeSelector:
+          perfnode: et5
+
+- kind: DeploymentConfig
+  apiVersion: v1
+  metadata:
+    name: ${WORKER_NAME}5
+    labels:
+      oshinko-cluster: ${CLUSTER_NAME}
+      oshinko-type: worker
+  spec:
+    strategy:
+      type: Rolling
+    triggers:
+      - type: ConfigChange
+    replicas: 1
+    selector:
+      name: ${WORKER_NAME}5
+    template:
+      metadata:
+        labels:
+          name: ${WORKER_NAME}5
+          oshinko-cluster: ${CLUSTER_NAME}
+          oshinko-type: worker
+      spec:
+        containers:
+          - name: ${WORKER_NAME}5
+            image: ${SPARK_IMAGE}
+            volumeMounts:
+            - name: config-volume
+              mountPath: /etc/config
+            env:
+              - name: SPARK_MASTER_ADDRESS
+                value: spark://${MASTER_NAME}:7077
+              - name: SPARK_MASTER_UI_ADDRESS
+                value: http://${MASTER_NAME}-webui:8080
+              - name: UPDATE_SPARK_CONF_DIR 
+                value: /etc/config 
+        volumes:
+          - name: config-volume
+            configMap:
+              name: workerconfig 
+        nodeSelector:
+          perfnode: et6
+
+- kind: DeploymentConfig
+  apiVersion: v1
+  metadata:
+    name: ${WORKER_NAME}6
+    labels:
+      oshinko-cluster: ${CLUSTER_NAME}
+      oshinko-type: worker
+  spec:
+    strategy:
+      type: Rolling
+    triggers:
+      - type: ConfigChange
+    replicas: 1
+    selector:
+      name: ${WORKER_NAME}6
+    template:
+      metadata:
+        labels:
+          name: ${WORKER_NAME}6
+          oshinko-cluster: ${CLUSTER_NAME}
+          oshinko-type: worker
+      spec:
+        containers:
+          - name: ${WORKER_NAME}6
+            image: ${SPARK_IMAGE}
+            volumeMounts:
+            - name: config-volume
+              mountPath: /etc/config
+            env:
+              - name: SPARK_MASTER_ADDRESS
+                value: spark://${MASTER_NAME}:7077
+              - name: SPARK_MASTER_UI_ADDRESS
+                value: http://${MASTER_NAME}-webui:8080
+              - name: UPDATE_SPARK_CONF_DIR 
+                value: /etc/config 
+        volumes:
+          - name: config-volume
+            configMap:
+              name: workerconfig 
+        nodeSelector:
+          perfnode: et7
+
+- kind: DeploymentConfig
+  apiVersion: v1
+  metadata:
+    name: ${WORKER_NAME}7
+    labels:
+      oshinko-cluster: ${CLUSTER_NAME}
+      oshinko-type: worker
+  spec:
+    strategy:
+      type: Rolling
+    triggers:
+      - type: ConfigChange
+    replicas: 1
+    selector:
+      name: ${WORKER_NAME}7
+    template:
+      metadata:
+        labels:
+          name: ${WORKER_NAME}7
+          oshinko-cluster: ${CLUSTER_NAME}
+          oshinko-type: worker
+      spec:
+        containers:
+          - name: ${WORKER_NAME}7
+            image: ${SPARK_IMAGE}
+            volumeMounts:
+            - name: config-volume
+              mountPath: /etc/config
+            env:
+              - name: SPARK_MASTER_ADDRESS
+                value: spark://${MASTER_NAME}:7077
+              - name: SPARK_MASTER_UI_ADDRESS
+                value: http://${MASTER_NAME}-webui:8080
+              - name: UPDATE_SPARK_CONF_DIR 
+                value: /etc/config 
+        volumes:
+          - name: config-volume
+            configMap:
+              name: workerconfig 
+        nodeSelector:
+          perfnode: et8
+
+- kind: DeploymentConfig
+  apiVersion: v1
+  metadata:
+    name: ${WORKER_NAME}8
+    labels:
+      oshinko-cluster: ${CLUSTER_NAME}
+      oshinko-type: worker
+  spec:
+    strategy:
+      type: Rolling
+    triggers:
+      - type: ConfigChange
+    replicas: 1
+    selector:
+      name: ${WORKER_NAME}8
+    template:
+      metadata:
+        labels:
+          name: ${WORKER_NAME}8
+          oshinko-cluster: ${CLUSTER_NAME}
+          oshinko-type: worker
+      spec:
+        containers:
+          - name: ${WORKER_NAME}8
+            image: ${SPARK_IMAGE}
+            volumeMounts:
+            - name: config-volume
+              mountPath: /etc/config
+            env:
+              - name: SPARK_MASTER_ADDRESS
+                value: spark://${MASTER_NAME}:7077
+              - name: SPARK_MASTER_UI_ADDRESS
+                value: http://${MASTER_NAME}-webui:8080
+              - name: UPDATE_SPARK_CONF_DIR 
+                value: /etc/config 
+        volumes:
+          - name: config-volume
+            configMap:
+              name: workerconfig 
+        nodeSelector:
+          perfnode: et9
+
+parameters:
+- name: CLUSTER_NAME
+  description: The name of the cluster known to oshinko
+  from: "spark-cluster-[0-9]{3}"
+  required: true
+- name: SPARK_IMAGE
+  description: Name of the Spark master/worker image
+  value: redhat-radanalytics-1-tech-preview/radanalytics10-spark21-hadoop27-openshift:1.0 
+- name: MASTER_NAME
+  description: master name used as a service name and a selector
+  generate: expression
+  from: "spark-master-[a-z0-9]{4}"
+  required: true
+- name: WORKER_NAME
+  description: worker name used as a selector
+  generate: expression
+  from: "spark-worker-[a-z0-9]{4}"
+  required: true
