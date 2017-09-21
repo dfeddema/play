@@ -456,7 +456,7 @@ if __name__ == "__main__":
     options, cases = parser.parse_args()
 
     sc = pyspark.SparkContext(appName="MLlibTestRunner")
-    sc.getConf.getAll.foreach(println)
+    for item in sorted(sc._conf.getAll()): print(item)
     for name in cases:
         test = globals()[name](sc)
         test.initialize(options)
