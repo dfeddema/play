@@ -13,27 +13,20 @@ spark = SparkSession.builder.config("spark.sql.crossJoin.enabled","true").getOrC
 
 n=500000
 
-# create RDD of random floats
+# create rdd of random floats
 nRow = n
 nCol = 4
 seed = 5
 numPartitions=32
 rdd = RandomRDDs.normalVectorRDD(spark, nRow, nCol,numPartitions,seed) 
 sc = spark.sparkContext
-print "number of partitions in RDD"
-print rdd.getNumPartitions()
 
 # convert each tuple in the rdd to a row
 randomNumberRdd = rdd.map(lambda x: Row(A=float(x[0]), B=float(x[1]), C=float(x[2]), D=float(x[3]))) 
-print randomNumberRdd.take(10)
 
-# create dataframe rdd
+# create dataframe from rdd
 schemaRandomNumberDF = spark.createDataFrame(randomNumberRdd)
 
-# print out first 20 lines of dataframe 
-#schemaRandomNumberDF.show()
-
 cross_df = schemaRandomNumberDF.crossJoin(schemaRandomNumberDF)
-#cross_df.show()
-
+cross_df.show()
 print "----------Count in cross-join--------------- {0}".format(cross_df.count()) 
