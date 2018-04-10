@@ -1,0 +1,49 @@
+import time
+import random
+from pyspark.context import SparkContext
+from pyspark.sql import SparkSession
+from pyspark import SparkConf
+from pyspark.sql import HiveContext, SQLContext
+import math
+from pyspark.mllib.random  import RandomRDDs 
+from pyspark.sql.types import *
+from pyspark.sql.functions import *
+from pyspark.sql.types import Row
+spark = SparkSession.builder.config("spark.sql.crossJoin.enabled","true").getOrCreate() 
+
+n=5
+
+# create rdd of random floats
+nRow = n
+nCol = 4
+seed = 5
+numPartitions=32
+
+rdd1 = RandomRDDs.normalVectorRDD(spark, nRow, nCol,numPartitions,seed) 
+seed = 3
+rdd2 = RandomRDDs.normalVectorRDD(spark, nRow, nCol,numPartitions,seed) 
+sc = spark.sparkContext
+
+# convert each tuple in the rdd to a row
+randomNumberRdd1 = rdd1.map(lambda x: Row(A=float(x[0]), B=float(x[1]), C=float(x[2]), D=float(x[3]))) 
+randomNumberRdd2 = rdd2.map(lambda x: Row(E=float(x[0]), F=float(x[1]), G=float(x[2]), H=float(x[3])))
+
+# create dataframe from rdd
+schemaRandomNumberDF1 = spark.createDataFrame(randomNumberRdd1)
+schemaRandomNumberDF2 = spark.createDataFrame(randomNumberRdd2)
+
+# cache the dataframe
+#schemaRandomNumberDF.cache()
+
+cross_df = schemaRandomNumberDF1.crossJoin(schemaRandomNumberDF2)
+
+# cache the dataframe
+cross_df.cache()
+
+# aggregate 
+print "----------Aggregate in cross-join--------------- {0}".format(cross_df.groupBy("A").sum()) 
+#exprs = {x: "sum" for x in cross_df.columns}
+#aggdf = cross_df.groupBy("A").agg(exprs).show()
+
+
+print "----------Count in cross-join--------------- {0}".format(cross_df.count()) 
