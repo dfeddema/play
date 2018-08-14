@@ -10,7 +10,7 @@ from pyspark.mllib.random  import RandomRDDs
 from pyspark.sql.types import *
 #from pyspark.sql.functions import *
 from pyspark.sql.types import Row
-#spark = SparkSession.builder.config("spark.sql.crossJoin.enabled","true").getOrCreate() 
+spark = SparkSession.builder.config("spark.sql.crossJoin.enabled","true").getOrCreate() 
 
 n=200000
 
