@@ -36,7 +36,7 @@ schemaRandomNumberDF2 = spark.createDataFrame(randomNumberRdd2)
 # cache the dataframe
 #schemaRandomNumberDF1.cache()
 
-cart_df = schemaRandomNumberDF1.cartesian(schemaRandomNumberDF2)
+cart_df = schemaRandomNumberDF1.crossJoin(schemaRandomNumberDF2)
 
 # aggregate 
 results = schemaRandomNumberDF1.groupBy("A").agg(func.max("B"),func.sum("C"))
