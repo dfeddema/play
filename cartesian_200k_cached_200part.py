@@ -18,7 +18,7 @@ n=200000
 nRow = n
 nCol = 4
 seed = 5
-numPartitions=100
+numPartitions=200
 
 rdd1 = RandomRDDs.normalVectorRDD(spark, nRow, nCol,numPartitions,seed) 
 seed = 3
